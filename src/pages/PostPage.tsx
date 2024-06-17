@@ -1,11 +1,22 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {UserApiservice} from "../services/getusers.api.services";
+import {IPostsProps} from "../models/IPostsProps";
 
 const PostPage = () => {
-    UserApiservice.getAllPosts().then(value => console.log(value.data))
+    const [Post, setPost] = useState<IPostsProps[]>([])
+    useEffect(() => {
+        UserApiservice.getAllPosts().then(value => setPost(value.data))
+
+    }, []);
+
     return (
         <div>
-            Hi Im Post
+            {Post.map(value => <ul key={value.id}>
+                <li> User ID:{value.userId}</li>
+                <li> Title:{value.title}</li>
+                <li> Body:{value.body}</li>
+
+            </ul>)}
         </div>
     );
 };
